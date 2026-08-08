@@ -1,8 +1,9 @@
 use std::collections::HashMap;
-use mindmap::Config;
+use mindmap::{Config, MomentBuilder};
 use mindmap::{Chain, Moment};
 use mindmap::estimate::estimate::*;
 use uuid::Uuid;
+use mindmap::types::types::PayloadTypes;
 
 fn main() {
 
@@ -34,22 +35,30 @@ fn main() {
 
     println!("{:?}", chain);
 
-    let payload: HashMap<String, String> = HashMap::from([("chain".to_string(), "Smth".to_string())]);
+    let payload: HashMap<String, PayloadTypes> = HashMap::from(
+        [(
+            "chain".to_string(), PayloadTypes::Text("Smth".to_string())
+        )]);
     
-    let moment = Moment::builder(specific_uuid, vec![0.231, 0.67348, 0.97582, 1.35783])
+    // let moment = Moment::MomentBuilder::new()//(specific_uuid, vec![0.231, 0.67348, 0.97582, 1.35783])
+    //     .with_payload(payload)
+    //     .with_next_moments(vec![Uuid::now_v7()])
+    //     .build()
+    //     .unwrap();
+
+    let moment = MomentBuilder::<128>::new()
+        .with_uuid(specific_uuid)
+        .with_vector("embedding".to_string(), [0.1; 128])
         .with_payload(payload)
-        .with_next_moments(vec![Uuid::now_v7()])
-        .build()
-        .unwrap();
+        .build();
 
     println!("{:?}", moment);
 
-        let input = EstimateInput::new(
-            768,                  // dimension
-            1_000_000,          // vector_count
-            DataType::I8,       // dtype (4 bytes)
-            3,            // vectors_per_dot
-        );
-
-        estimate(input);
+    let input = EstimateInput::new(
+        768,                  // dimension
+        1_000_000,          // vector_count
+        DataType::I8,       // dtype (4 bytes)
+        3,            // vectors_per_dot
+    );
+    estimate(input);
 }

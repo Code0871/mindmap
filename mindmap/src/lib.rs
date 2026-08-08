@@ -6,8 +6,9 @@ pub mod errors;
 // pub mod api;
 // pub mod search;
 pub mod estimate;
+pub mod types;
 
 pub use config::config::Config;
 pub use storage::chain::Chain;
-// pub use storage::moment::Moment;
+pub use storage::moment::*;
 pub use errors::{ConfigError, Result};
