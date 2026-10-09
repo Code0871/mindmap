@@ -4,26 +4,26 @@ use uuid::{Uuid};
 use crate::types::types::PayloadTypes;
 
 #[derive(Debug, Clone)]
-pub struct Moment <const DIM: usize> {
+pub struct Moment {
     pub uuid: uuid::Uuid,
     pub chain_id: Option<uuid::Uuid>,
-    pub vector: HashMap<String, [f32; DIM]>,
+    pub vector: HashMap<String, Vec<f32>>,
     pub timestamp: DateTime<Utc>,
     pub payload: HashMap<String, PayloadTypes>,
     pub related_moments: Option<Vec<Uuid>>,
 }
 
  #[derive(Debug, Clone, Default)]
-pub struct MomentBuilder <const DIM: usize>{
+pub struct MomentBuilder {
     uuid: Option<Uuid>,
     chain_id: Option<Uuid>,
-    vector: HashMap<String, [f32; DIM]>,
+    vector: HashMap<String,Vec<f32>>,
     timestamp: DateTime<Utc>,
     payload: HashMap<String, PayloadTypes>,
     related_moments: Option<Vec<Uuid>>,
 }
 
-impl <const DIM: usize> MomentBuilder <DIM> {
+impl MomentBuilder {
     pub fn new() -> Self {
         Self {
             uuid: None,
@@ -60,12 +60,12 @@ impl <const DIM: usize> MomentBuilder <DIM> {
         self
     }
     
-    pub fn with_vector(mut self, key: String, vector: [f32; DIM]) -> Self {
+    pub fn with_vector(mut self, key: String, vector: Vec<f32>) -> Self {
         self.vector.insert(key, vector);
         self
     }
 
-    pub fn build(self) -> Result<Moment<DIM>, String> {
+    pub fn build(self) -> Result<Moment, String> {
         if self.vector.is_empty() {
             return Err("Vector is empty".to_string())
         }

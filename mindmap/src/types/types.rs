@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+// use serde::{Serialize, Deserialize};
+use serde_json::Value;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum VectorTypes {
@@ -19,5 +21,6 @@ pub enum PayloadTypes{
     Bool(bool),
     Array(Vec<PayloadTypes>),
     HashMap(HashMap<String, PayloadTypes>),
+    Json(Value),
     Null,
 }
